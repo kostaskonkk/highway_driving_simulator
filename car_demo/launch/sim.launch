@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<launch>
+
+
+  <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/kostas/results/sim_raw.bag /scan /tf /tf_static /ego_pose /prius_slow /prius_fast" />
+
+	<!--<node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/kostas/results/sim.bag /mocap_pose /tracks/box /tracks/mean /tracks/mean_kf /tracks/box /tracks/box_ukf /robot_1 /robot_2" />-->
+
+  <arg name="rvizconfig" default="$(find car_demo)/rviz/highway.rviz" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
+
+  <include file="$(find datmo)/launch/simulation.launch"/>
+
+  <include file="$(find car_demo)/launch/world.launch">
+    <arg name="verbose" value="true"/>
+    <arg name="world_name" value="$(find car_demo)/worlds/pass3_bus_suv.world"/>
+  </include>
+
+  <arg name="model" default="$(find prius_description)/urdf/prius.urdf"/>
+  <param name="robot_description" textfile="$(arg model)"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" >
+     <!--<remap from="robot_description" to="different_robot_description" /> -->
+     <!--<remap from="joint_states" to="/prius/joint_states" />-->
+  </node>
+  <node pkg="localization" type="sim_local" name="localization"/>
+
+  <!--<arg name="model" default="$(find prius_description)/urdf/actor.urdf"/>-->
+  <!--<param name="robot_description" textfile="$(arg model)"/>-->
+  <!--<node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" >-->
+    <!--[> <remap from="robot_description" to="different_robot_description" /> <]-->
+     <!--<remap from="joint_states" to="/actor/joint_states" /> -->
+  <!--</node>-->
+
+  <!--<node pkg="fake_localization" type="fake_localization" name="fake_localization">-->
+  <!--<node pkg="car_demo" type="actor_poses.py" name="bus"/>-->
+     <!--<remap from="base_pose_ground_truth" to="/prius/base_pose_ground_truth"/> -->
+  <!--</node>-->
+  <!--<node pkg="tf2_ros" type="static_transform_publisher" name="very_inaccurate_odom" args="0 0 0 0 0 0 odom base_link"/>-->
+  <!--<node pkg="car_demo" type="joystick_translator" name="joystick_translator"/>-->
+
+  <!--<node pkg="car_demo" type="timoniera_translator" name="timonieara_translator"/>-->
+  <node pkg="car_demo" type="white_translator" name="ego_translator"/>
+  <node pkg="car_demo" type="gray_translator" name="fast_translator"/>
+  <node pkg="car_demo" type="gray_dirty_translator" name="slow_translator"/>
+
+  <!--<node pkg="timoniera" type="timoniera_node" name="timoniera">-->
+    <!--<param name="dev" value="/dev/input/js0"/>-->
+    <!--<param name="topic" value="timoniera"/>-->
+  <!--</node>-->
+
+  <node pkg="timoniera" type="timoniera_node" name="white">
+    <param name="dev" value="/dev/input/js0"/>
+    <param name="topic" value="white"/>
+  </node>
+
+  <node pkg="timoniera" type="timoniera_node" name="gray">
+    <param name="dev" value="/dev/input/js1"/>
+    <param name="topic" value="gray"/>
+  </node>
+
+  <node pkg="timoniera" type="timoniera_node" name="gray_dirty">
+    <param name="dev" value="/dev/input/js2"/>
+    <param name="topic" value="gray_dirty"/>
+  </node>
+
+  <!--<node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -x 1 -y -2 -z 0.5 -model prius_ros"/>-->
+
+</launch>
