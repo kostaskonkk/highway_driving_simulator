@@ -2,9 +2,9 @@
 <launch>
 
 
-  <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/kostas/results/sim_raw.bag /scan /tf /tf_static /ego_pose /prius_slow /prius_fast" />
+  <!--<node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/kostas/results/sim_raw.bag /scan /tf /tf_static /ego_pose /prius_slow /prius_fast" />-->
 
-	<!--<node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/kostas/results/sim.bag /mocap_pose /tracks/box /tracks/mean /tracks/mean_kf /tracks/box /tracks/box_ukf /robot_1 /robot_2" />-->
+	<node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/kostas/results/sim.bag /mocap_pose /tracks/box /tracks/mean /tracks/mean_kf /tracks/box /tracks/box_ukf /robot_1 /robot_2" />
 
   <arg name="rvizconfig" default="$(find car_demo)/rviz/highway.rviz" />
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
