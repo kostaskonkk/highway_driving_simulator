@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node pkg="rosbag" type="record" name="recorder" output="screen" args="-O /home/kostas/experiments/simulation/circular_turn.bag /scan /tf /tf_static /ego_pose /prius_slow" />
+
+  <arg name="rvizconfig" default="$(find car_demo)/rviz/highway.rviz" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
+  <include file="$(find datmo)/launch/simulation.launch"/>
+
+  <include file="$(find car_demo)/launch/world.launch">
+    <arg name="verbose" value="true"/>
+    <arg name="world_name" value="$(find car_demo)/worlds/circular_turn.world"/>
+  </include>
+
+  <arg name="model" default="$(find prius_description)/urdf/prius.urdf"/>
+  <param name="robot_description" textfile="$(arg model)"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" >
+  </node>
+
+  <node pkg="localization" type="sim_local" name="localization"/>
+
+  <node pkg="car_demo" type="gray_dirty_translator" name="slow_translator"/>
+
+  <node pkg="timoniera" type="timoniera_node" name="gray_dirty">
+    <param name="dev" value="/dev/input/js0"/>
+    <param name="topic" value="gray_dirty"/>
+  </node>
+
+</launch>
