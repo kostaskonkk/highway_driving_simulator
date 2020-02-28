@@ -1,11 +1,16 @@
 # Highway Simulator in ROS
 
-This is a simulation of highway driving with a Prius car in [gazebo 9](http://gazebosim.org) with sensor data being published using [ROS melodic](http://wiki.ros.org/melodic/Installation)
+This is a simulation of highway driving with three driveable Prius cars in [gazebo 9](http://gazebosim.org) with sensor data being published using [ROS melodic](http://wiki.ros.org/melodic/Installation)
+The first of the three vehicles is equipped with a LIDAR, front and rear camera, and eight RADAR sensors, while the other two cars have no sensors onboard.
+
 The car's throttle, brake, steering, and gear shifting are controlled by publishing a ROS message.
 A ROS node allows driving with a gamepad or joystick.
 
+In addition to the three Prius cars, there is a bus and a truck at the oppposite lane, which follow predetermined straight paths.
+
 # Video + Pictures
 
+![Video of the simulation environment](https://github.com/kostaskonkk/highway_driving_simulator/raw/master/videos/overtakes.gif)
 <!--A video and screenshots of the demo can be seen in this blog post: https://www.osrfoundation.org/simulated-car-demo/-->
 
 <!--![Prius Image](https://www.osrfoundation.org/wordpress2/wp-content/uploads/2017/06/prius_roundabout_exit.png)-->
